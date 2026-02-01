@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SubscriberCountersView>
+@{
+    ViewData["Titel"]="Subscriber Detiles Page";
+}
+<div class="container p-3">
+    <div class="row pt-4"> 
+        <h2 class="text-primary-emphasis">Subscriber Detiles</h2>
+    </div>
+    <div class="row pt-4"> 
+        <h3 class="text-primary-emphasis">Name :<span class="text-primary">@ViewBag.subscriber.SubscriberName</span></h3>
+        <h3 class="text-primary-emphasis">Phon  Number :<span class="text-primary">@ViewBag.subscriber.SubscriberPhone</span></h3>
+        <h3 class="text-primary-emphasis">Identification Number :<span class="text-primary">@ViewBag.subscriber.IdentificationNumber</span></h3>
+    </div>    
+    <div class="row pt-3"> 
+        <table class="table table-hover ">
+        <thead>
+        <tr class="table-secondary">
+            <th class="text-primary-emphasis" scope="col">Counter Number</th>
+            <th class="text-primary-emphasis" scope="col">Counter Type</th>
+            <th class="text-primary-emphasis" scope="col">Counter Location</th>
+            <th class="text-primary-emphasis" scope="col">Previse Palance</th>
+            <th class="text-primary-emphasis"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var detail in Model)
+        {
+            <tr  class="table-default">
+                <td class="text-primary">@detail.CounterNumber</td>
+                <td class="text-primary">@detail.CounterTypeName</td>
+                <td class="text-primary">@detail.CounterLocation</td>
+                <td class="text-primary">@detail.PreviseBalance</td>
+                <td class="text-primary"><a class="btn btn-outline-primary" asp-controller="Counter" asp-action="Details" asp-route-id="@detail.CounterId">Show</a></td>
+            </tr>
+        }
+       </tbody>
+       </table>
+    </div>
+</div>
+

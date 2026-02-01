@@ -1,0 +1,81 @@
+﻿@model IEnumerable<waterSystemReem.Models.CounterDetailsView>
+@{
+    ViewData["Title"] = "Counter Details Page";
+    var counter = Model.FirstOrDefault();
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <h2 class="text-primary-emphasis">Counter Details</h2>
+    </div>
+    @if(counter != null)
+    {
+        <div class="row pt-4">
+            <h3 class="text-primary-emphasis">
+                Counter Number: 
+                <span class="text-primary"> @counter.CounterNumber</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Counter Location: 
+                <span class="text-primary"> @counter.CounterLocation</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Last Reading Date: 
+                <span class="text-primary"> @counter.DateLastReading.ToShortDateString()</span>
+            </h3>
+       @*     <h3 class="text-primary-emphasis">
+                Last Read Duration: 
+                <span class="text-primary"> @counter.LastReadDuration</span>
+            </h3>*@
+            <h3 class="text-primary-emphasis">
+                Previous Balance: 
+                <span class="text-primary"> @counter.PreviseBalance.ToString("C")</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Subscriber Name: 
+                <span class="text-primary"> @counter.SubscriberName</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Counter Type: 
+                <span class="text-primary"> @counter.CounterTypeName</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Meter Range: 
+                <span class="text-primary"> @counter.MeterRang</span>
+            </h3>
+            <h3 class="text-primary-emphasis">
+                Local Councils: 
+                <span class="text-primary"> @counter.LocalComcils</span>
+            </h3>
+        </div>
+
+        <!-- Optional: If you want to include a table for any additional structured info, you can uncomment and adjust the below section -->
+        @*<div class="row pt-3">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="table-secondary">
+                        <th class="text-primary-emphasis">Field</th>
+                        <th class="text-primary-emphasis">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-default">
+                        <td class="text-primary">Counter Number</td>
+                        <td class="text-primary">@counter.CounterNumber</td>
+                    </tr>
+                    <!-- Add additional rows if needed -->
+                </tbody>
+            </table>
+        </div>*@
+    }
+    else
+    {
+        <div class="row pt-4">
+            <p>No details found for this counter.</p>
+        </div>
+    }
+    <div class="row pt-3">
+        <a class="btn btn-outline-primary" asp-controller="invoice" asp-action="displayAllInvoices" asp-route-id="@counter.CounterId">Show invoices</a>
+        <a class="btn btn-outline-secondary" asp-controller="Counter" asp-action="Show">Back to Counters</a>
+    </div>
+</div>

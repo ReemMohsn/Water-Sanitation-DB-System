@@ -1,0 +1,49 @@
+﻿@model waterSystemReem.Models.InvoiceCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Invoice";
+}
+
+<h1 class="text-center">Create Invoice</h1>
+
+<div class="card border-primary mb-3" style="max-width: 100rem;">
+  <div class="card-header text-center">Add New reading for one month</div>
+  <div class="card-body">
+    <p class="card-text">From Date: @Model.FromDate?.ToString("yyyy-MM-dd") &nbsp;&nbsp;&nbsp;&nbsp; To Date:@Model.ToDate?.ToString("yyyy-MM-dd")</p>
+    <form asp-controller="invoice" asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <!-- نخبئ CounterId -->
+    <input type="hidden" asp-for="CounterId" />
+
+    <div class="form-group">
+        <label asp-for="PrevReading" class="control-label"></label>
+        <input asp-for="PrevReading" class="form-control" />
+        <span asp-validation-for="PrevReading" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CurrReading" class="control-label"></label>
+        <input asp-for="CurrReading" class="form-control" />
+        <span asp-validation-for="CurrReading" class="text-danger"></span>
+    </div>
+
+    <!-- باقي الحقول التي تريد عرضها للتأكيد (يمكنك إضافتها كحقول قراءة فقط إن أردت) -->
+
+    <hr />
+    <div class="form-group">
+        <input type="submit" value="Create Invoice" class="btn btn-primary" />
+    </div>
+</form>
+    </div>
+    </div>
+
+
+<div>
+    <a asp-action="displayAllInvoices" asp-route-id="@Model.CounterId">Back to List</a>
+</div>
+
+
+
+
+
+

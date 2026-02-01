@@ -1,0 +1,45 @@
+﻿@model AddCounterViewModel
+
+@{
+    ViewData["Title"] = "Create New Counter";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <h2 class="text-primary-emphasis">Create New Counter</h2>
+    </div>
+    <div class="row pt-3">
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label class="text-primary-emphasis" asp-for="CounterNumber"></label>
+                <input asp-for="CounterNumber" class="form-control" />
+                <span asp-validation-for="CounterNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-primary-emphasis" asp-for="CounterLocation"></label>
+                <input asp-for="CounterLocation" class="form-control" />
+                <span asp-validation-for="CounterLocation" class="text-danger"></span>
+            </div>
+            @* Previous balance is hidden and defaults to 0 *@
+            <input asp-for="PreviseBalance" type="hidden" value="0" />
+            <div class="form-group">
+                <label class="text-primary-emphasis" asp-for="SubscriberId"></label>
+                <input asp-for="SubscriberId" class="form-control" />
+                <span asp-validation-for="SubscriberId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+    <label class="text-primary-emphasis" asp-for="CounterTypeId"></label>
+    <input asp-for="CounterTypeId" class="form-control" type="number" min="1" max="2" required />
+    <span asp-validation-for="CounterTypeId" class="text-danger"></span>
+</div>
+
+
+
+            <button type="submit" class="btn btn-outline-primary mt-4">Create</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

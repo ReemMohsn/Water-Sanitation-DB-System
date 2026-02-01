@@ -1,0 +1,103 @@
+﻿@model IEnumerable<waterSystemReem.Models.InvoiceCounterView>
+
+@{
+    ViewData["Title"] = "print";
+    // نفترض أن هناك بيانات وأن أول عنصر يحتوي على كافة المعلومات المطلوبة
+    var invoice = Model.First();
+}
+
+<hr />
+<div class="card border-primary mb-3" style="max-width: 100rem;">
+  <div class="card-header text-center">WATER BILL</div>
+  <div class="card-body">
+    <p class="card-text">Location: @invoice.CounterLocation</p>
+    <p class="card-text">Wanted By Brother: @invoice.SubscriberName</p>
+    <p class="card-text">@invoice.CounterTypeName Counter</p>
+    <p class="card-text">Number of counter: @invoice.CounterNumber</p>
+    <p class="card-text">From Date: @invoice.FromDate        To Date: @invoice.ToData</p>
+    <p class="card-text">Is Payed? @invoice.IsPaied </p>
+    <table class="table table-hover">
+      <thead>
+          <tr class="table-secondary">
+               <th class="card-text">
+                  @Html.DisplayNameFor(model => model.WaterValue)
+              </th>
+              <th class="card-text">
+                @Html.DisplayNameFor(model => model.SanitationFees)
+              </th>
+              <th class="card-text">
+                  MeterRent
+              </th>
+              <th class="card-text">
+                  @Html.DisplayNameFor(model => model.LocalComcils)
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>@invoice.WaterValue</td>
+              <td>@invoice.SanitationFees</td>
+              <td>@invoice.MeterRang</td>
+              <td>@invoice.LocalComcils</td>
+          </tr>
+          <tr>
+              <td colspan="4">DeservedAmount = @invoice.Balance</td>
+          </tr>
+      </tbody>
+    </table>
+    <!-- زر الدفع المصحح -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#payInvoiceModal">
+        pay
+    </button>
+  </div>
+</div>
+
+<!-- Modal الدفع -->
+<div class="modal fade" id="payInvoiceModal" tabindex="-1" aria-labelledby="payInvoiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="payInvoiceModalLabel">Payment confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to pay?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="confirmPay">pay</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $("#confirmPay").click(function () {
+                $.ajax({
+                    url: '@Url.Action("print", "Invoice")',
+                    type: 'POST',
+                    data: { 
+                        invoiceId: @invoice.InvoiceId, 
+                        invoiceBalance: @invoice.Balance, 
+                        counterId: @invoice.CounterId 
+                    },
+                    success: function (response) {
+                        if(response.success){
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert("Error: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred during the payment process.");
+                    }
+                });
+                // إغلاق الـ Modal بعد بدء الطلب
+                $("#payInvoiceModal").modal('hide');
+            });
+        });
+    </script>
+}

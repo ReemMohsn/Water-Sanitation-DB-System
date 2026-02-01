@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Subscriber>
+@{
+	ViewData["Titel"]="Subscribers Page";
+}
+<div class="container p-3">
+    <div class="row pt-4"> 
+        <div class="col-6"> 
+            <h2 class="text-primary-emphasis">The Subscribers</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a  class="btn btn-outline-primary" asp-controller="Subscriber" asp-action="Create" style="margin:15px;">Create New Subscriber</a>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <form method="get" asp-action="Index" class="input-group mb-3">
+            <input type="text" name="searchString" class="form-control" placeholder="Search Of Subscriber" />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            <button type="submit" class="btn btn-outline-secondary" asp-action="Index">Show All</button>
+        </form>
+    </div>
+    <div class="row pt-3">
+        <table class="table table-hover ">
+       <thead>
+        <tr class="table-secondary">
+            <th class="text-primary-emphasis" scope="col">Identification Number</th>
+            <th class="text-primary-emphasis" scope="col">Subscriber Name</th>
+            <th class="text-primary-emphasis" scope="col">Subscriber Phone</th>
+            <th class="text-primary-emphasis"></th>
+        </tr>
+       </thead>
+       <tbody>
+        @foreach (var s in Model)
+        {
+            <tr class="table-default">
+                <td class="text-primary">@s.IdentificationNumber</td>
+                <td class="text-primary">@s.SubscriberName</td>
+                <td class="text-primary">@s.SubscriberPhone</td>
+                <td class="text-primary">
+                    <a class="btn btn-outline-primary" asp-controller="Subscriber" asp-action="ShowDetiles" asp-route-id="@s.SubscriberId">Show Detiles</a>
+                    <a class="btn btn-outline-primary" asp-controller="Subscriber" asp-action="Delete" asp-route-id="@s.SubscriberId">Delete</a>
+                </td>
+            </tr>
+        }
+      </tbody>
+       </table>
+    </div>
+
+
+
+</div>

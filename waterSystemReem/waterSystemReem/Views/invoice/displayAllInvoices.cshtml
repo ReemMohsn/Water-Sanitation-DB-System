@@ -1,0 +1,124 @@
+﻿@model IEnumerable<waterSystemReem.Models.Invoice>
+
+@{
+    ViewData["Title"] = "displayAllInvoices";
+    int counter = 1; // عداد لرقم الفاتورة
+}
+<div class="container p-3">
+    <div class="row pt-4">
+            @if (Model != null && Model.Any())
+           {
+               <div class="col-6">
+            <h2 class="text-primary-emphasis">All Invoices of counter number @Model.First().Counter.CounterNumber</h2>
+            </div>
+               }
+            else
+            {
+            <div class="col-6">
+            <h2 class="text-primary-emphasis">No Invoices Found</h2>
+            </div>
+            }
+
+        <div class="col-6 text-end">
+        <button style="margin:15px;" class="btn btn-outline-primary" id="btnAddInvoice" 
+    asp-controller="Invoice" asp-action="Create" 
+    asp-route-id="@ViewBag.CounterId"
+    data-id="@ViewBag.CounterId"
+>Add New Reading</button>
+        </div>
+    </div>
+
+    <!-- Modal التأكيد -->
+<div class="modal fade" id="addInvoiceModal" tabindex="-1" aria-labelledby="addInvoiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addInvoiceModalLabel">Invoice Addition Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="invoiceModalBody">
+         <!-- سيتم تعبئة الرسالة هنا -->
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" id="confirmAddInvoice">OK</button>
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Counters Table -->
+    
+    <div class="row pt-3">
+        
+<table class="table table-hover">
+    <thead>
+        <tr class="table-secondary">
+             <th class="text-primary-emphasis" scope="col">Invoice</th>
+             <th class="text-primary-emphasis" scope="col">@Html.DisplayNameFor(model => model.FromDate)</th>
+             <th class="text-primary-emphasis" scope="col">@Html.DisplayNameFor(model => model.ToData)</th>
+             <th class="text-primary-emphasis" scope="col">@Html.DisplayNameFor(model => model.Balance)</th>
+             <th class="text-primary-emphasis" scope="col">@Html.DisplayNameFor(model => model.IsPaied)</th>
+             <th class="text-primary-emphasis" scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr class="table-default">
+            <td class="text-primary">Invoice @counter</td>
+            <td class="text-primary">@Html.DisplayFor(modelItem => item.FromDate)</td>
+            <td class="text-primary">@Html.DisplayFor(modelItem => item.ToData)</td>
+            <td class="text-primary">@Html.DisplayFor(modelItem => item.Balance)</td>
+            <td class="text-primary">@Html.DisplayFor(modelItem => item.IsPaied)</td>
+            <td class="text-primary">
+                <a class="btn btn-outline-primary" asp-action="print" asp-route-id="@item.InvoiceId">Details</a></td>
+            </tr>
+        counter++;
+    }
+    </tbody>
+</table>
+
+               
+    
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            // عند الضغط على زر الإضافة، يتم استدعاء إجراء التحقق من عدد الأشهر
+            $("#btnAddInvoice").click(function(){
+                var counterId = $(this).data("id");
+                $.ajax({
+                    url: '@Url.Action("CheckMonthsPassed", "Invoice")',
+                    type: 'GET',
+                    data: { counterId: counterId },
+                    success: function(response){
+                        var months = response.monthsPassed;
+                        if(months < 1) {
+                            $("#invoiceModalBody").html("<p>A month has not passed yet, you cannot add a new reading to this count.</p>");
+                            $("#confirmAddInvoice").hide();
+                        }
+                        else{
+                            $("#invoiceModalBody").html("<p>" + months + " months have passed without adding new readings,Do you want to add a new reading?</p>");
+                            $("#confirmAddInvoice").show();
+                        }
+                        $("#addInvoiceModal").modal("show");
+                    },
+                    error: function(){
+                        alert("An error occurred while checking the status.");
+                    }
+                });
+            });
+            
+            // عند الضغط على زر OK في الـ Modal يتم إعادة التوجيه إلى صفحة الإضافة (Create)
+            $("#confirmAddInvoice").click(function(){
+                var counterId = $("#btnAddInvoice").data("id");
+                window.location.href = '@Url.Action("Create", "Invoice")' + "?id=" + counterId;
+            });
+        });
+    </script>
+}
+
+<hr />

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Water And Sanitation Corporation</title>
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/waterSystemReem.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand text-light" >Water And Sanitation Corporation</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" asp-controller="Home" asp-action="Index">Home
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" asp-controller="Subscriber" asp-action="Index">Subscribers</a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link" asp-controller="Counter" asp-action="Show">Counters</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>       
+      </ul>      
+    </div>
+  </div>
+</nav>
+ <div>
+     <main role="main" class="pb-3">
+            @RenderBody()
+     </main>   
+ </div>   
+ <footer class="border-top footer text-light" >
+        <div class="container text-primary text-center" >
+            &copy; 2025 - Water And Sanitation Corporation - <a class="text-decoration-none"  asp-controller="Home" asp-action="Index">Home</a>
+        </div>
+ </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)    
+</body>
+</html>
+
